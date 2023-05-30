@@ -2,9 +2,11 @@
 
 namespace App\Helpers;
 
+use App\Models\PenjualanModel;
+
 class OtherHelper
 {
-    function monthIndonesia($bln)
+    public function monthIndonesia($bln)
     {
         $bulan = $bln;
         switch ($bulan){
@@ -34,5 +36,14 @@ class OtherHelper
             break;
         }
         return $bulan;
+    }
+
+    public function transactionNumber(): string
+    {
+        $pref = "TRX";
+        $countPenjualan = PenjualanModel::count();
+        $digit = substr(($countPenjualan + 1001),1);
+        $res = $pref.$digit;
+        return $res;
     }
 }

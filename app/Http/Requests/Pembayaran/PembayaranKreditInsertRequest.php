@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Requests\Company;
+namespace App\Http\Requests\Pembayaran;
 
 use App\Helpers\ResponseHelper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\Rule;
 
-class CompanyUpdateRequest extends FormRequest
+class PembayaranKreditInsertRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'name' => ['required','max:255',Rule::unique('company')->where(function ($query){
-                return $query->where('name', request()->name)->whereNull('deleted_at');
-            })],
-            'owner_name' => 'required|max:255',
-            'logo' => 'required|max:255',
-            'sector_id' => 'required|exists:sector,id',
+            'transaction_number' => 'required|exists:penjualan,transaction_number',
+            'tanggal_bayar' => 'required|date',
         ];
     }
 
@@ -30,10 +25,13 @@ class CompanyUpdateRequest extends FormRequest
         throw new HttpResponseException(response()->custom((new ResponseHelper)->responseValidation(strtoupper($messageError))));
     }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'name.required' => 'Name is required',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'tanggal_bayar.required' => 'Tanggal Bayar Harus Di Isi',
+            'tanggal_bayar.date' => 'Tanggal Bayar Harus Berformat Tanggal',
+            'transaction_number.required' => 'Kode Transaksi Harus Di Isi',
+            'transaction_number.exists' => 'Kode Transaksi Tidak Valid',
+        ];
+    }
 }

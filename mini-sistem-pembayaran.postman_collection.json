@@ -58,14 +58,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"transaction_number\":\"TRX013\",\r\n    \"tanggal_bayar\":\"2023-08-30\"\r\n}",
+					"raw": "{\r\n    \"tanggal_bayar\":\"2023-07-30\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{host}}/api/{{version}}/pembayaran/bayar-cicilan"
+				"url": "{{host}}/api/{{version}}/pembayaran/bayar-cicilan/2"
 			},
 			"response": []
 		}

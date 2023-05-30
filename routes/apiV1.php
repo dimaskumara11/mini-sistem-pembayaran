@@ -10,6 +10,6 @@ Route::middleware('my-auth-api')->group(function () {
     });
     Route::prefix("pembayaran")->group(function () {
         Route::post("/bayar", [PembayaranController::class, 'bayar']);
-        Route::post("/bayar-cicilan", [PembayaranController::class, 'bayarCicilan']);
+        Route::post("/bayar-cicilan/{id_pembayaran}", [PembayaranController::class, 'bayarCicilan']);
     });
 });

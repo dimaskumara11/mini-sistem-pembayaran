@@ -12,7 +12,6 @@ class PembayaranKreditInsertRequest extends FormRequest
     public function rules()
     {
         return [
-            'transaction_number' => 'required|exists:penjualan,transaction_number',
             'tanggal_bayar' => 'required|date',
         ];
     }
@@ -30,8 +29,6 @@ class PembayaranKreditInsertRequest extends FormRequest
         return [
             'tanggal_bayar.required' => 'Tanggal Bayar Harus Di Isi',
             'tanggal_bayar.date' => 'Tanggal Bayar Harus Berformat Tanggal',
-            'transaction_number.required' => 'Kode Transaksi Harus Di Isi',
-            'transaction_number.exists' => 'Kode Transaksi Tidak Valid',
         ];
     }
 }

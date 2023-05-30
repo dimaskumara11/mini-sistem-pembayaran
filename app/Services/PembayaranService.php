@@ -77,35 +77,40 @@ class PembayaranService
             ];
         }
     }
-    public function bayarCicilan(Request $request)
+    public function bayarCicilan(Request $request, $idPembayaran): array
     {
         try {
-            $getPembayaran = $this->pembayaranModel->whereHas("penjualan",function($query) use($request){
-                $query->where("transaction_number", $request->transaction_number);
-            })->first();
+            $pembayaran = $this->pembayaranModel->find($idPembayaran);
+            if(empty($pembayaran))
+                return ["id"=>"","message"=>"ID PEMBAYARAN TIDAK VALID"];
+            $checkCicilanBulanIni = $this->pembayaranKreditModel->where("pembayaran_id",$pembayaran->id)->where("tanggal_bayar","like","%".Carbon::parse($request->tanggal_bayar)->format("Y-m")."%")->first();
+            if($checkCicilanBulanIni)
+                return ["id"=>"","message"=>"CICILAN BULAN INI SUDAH DI BAYAR"];
 
             DB::beginTransaction();
             $pembayaranKredit = $this->pembayaranKreditModel;
-            $pembayaranKredit->pembayaran_id = $getPembayaran->id;
+            $pembayaranKredit->pembayaran_id = $pembayaran->id;
             $pembayaranKredit->tanggal_bayar = $request->tanggal_bayar;
-            $pembayaranKredit->nilai_bayar = $getPembayaran->angsuran_bulanan;
+            $pembayaranKredit->nilai_bayar = $pembayaran->angsuran_bulanan;
             if($pembayaranKredit->save()){
-                $pembayaran = $this->pembayaranModel->find($getPembayaran->id);
-                $pembayaran->sisa_bayar = $getPembayaran->sisa_bayar - $getPembayaran->angsuran_bulanan;
+                $pembayaran->sisa_bayar = $pembayaran->sisa_bayar - $pembayaran->angsuran_bulanan;
                 if($pembayaran->save()){
                     DB::commit();
-                    return true;
+                    return ["id"=>$pembayaranKredit->id];
                 }else{
                     DB::rollBack();
-                    return false;
+                    return ["id"=>""];
                 }
             }else{
                 DB::rollBack();
-                return false;
+                return ["id"=>""];
             }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return false;
+            return [
+                "id" => null,
+                "message" => $th->getMessage()
+            ];
         }
     }
 }

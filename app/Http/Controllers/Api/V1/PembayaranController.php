@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pembayaran\PembayaranInsertRequest;
 use App\Http\Requests\Pembayaran\PembayaranKreditInsertRequest;
+use App\Models\PembayaranModel;
 use App\Services\PembayaranService;
 use Illuminate\Http\JsonResponse;
 
@@ -23,11 +24,11 @@ class PembayaranController extends Controller
             return response()->custom($this->responseHelper->responseErrorCode($data["message"]));
         return response()->custom($data["id"] ? $this->responseHelper->responseInsertSuccess(["id"=>$data["id"]]) : $this->responseHelper->responseInsertFail(null));
     }
-    public function bayarCicilan(PembayaranKreditInsertRequest $request): JsonResponse
+    public function bayarCicilan(PembayaranKreditInsertRequest $request, $idPembayaran): JsonResponse
     {
-        $data = (new PembayaranService())->bayarCicilan($request);
+        $data = (new PembayaranService())->bayarCicilan($request, $idPembayaran);
         if($data["message"]??"")
             return response()->custom($this->responseHelper->responseErrorCode($data["message"]));
-        return response()->custom($data ? $this->responseHelper->responseInsertSuccess(null) : $this->responseHelper->responseInsertFail(null));
+        return response()->custom($data["id"] ? $this->responseHelper->responseInsertSuccess(["id"=>$data["id"]]) : $this->responseHelper->responseInsertFail(null));
     }
 }

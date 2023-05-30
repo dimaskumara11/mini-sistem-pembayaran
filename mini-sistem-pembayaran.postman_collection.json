@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "378e7ae8-207f-45a0-a029-e8a4e730356a",
+		"name": "mini-sistem-pembayaran",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "7177928"
+	},
+	"item": [
+		{
+			"name": "Laporan Penjualan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/api/{{version}}/laporan-penjualan"
+			},
+			"response": []
+		},
+		{
+			"name": "Pembayaran",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"2023-05-31\",\r\n    \"marketing_id\":1,\r\n    \"jenis\":\"TUNAI\",\r\n    \"dp\":\"2000000\",\r\n    \"jatuh_tempo\":\"2024-05-31\",\r\n    \"bunga\":\"5\",\r\n    \"cargo_fee\":\"50000\",\r\n    \"total_bayar\":\"20000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/{{version}}/pembayaran/bayar"
+			},
+			"response": []
+		},
+		{
+			"name": "Cicil Angsuran",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transaction_number\":\"TRX013\",\r\n    \"tanggal_bayar\":\"2023-08-30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/{{version}}/pembayaran/bayar-cicilan"
+			},
+			"response": []
+		}
+	]
+}

@@ -16,7 +16,7 @@ class CheckTokenValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->header('Authorization') !== 'Bearer TOKEN-ASAL') {
+        if ($request->header('Authorization') !== 'Bearer nlsadfsklm23ml0928mlk890238nmlsasjio323!2') {
             return response()->custom((new ResponseHelper)->responseUnauthorized(__("messages.token_invalid")));
         }
  
